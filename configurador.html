@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configura tu Vista Previa - Invytia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #fff0f3;
+            --text-dark: #4a1525;
+            --gold: #d4a373;
+            --white: #ffffff;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .config-card {
+            background: var(--white);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(74, 21, 37, 0.08);
+            border: 1px solid rgba(212, 163, 115, 0.3);
+        }
+
+        .header-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text-dark);
+            letter-spacing: 2px;
+        }
+
+        .form-group { margin-bottom: 25px; }
+
+        label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            color: var(--gold);
+            font-weight: 600;
+        }
+
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #f0d8df;
+            border-radius: 6px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            background: #faf6f7;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus { border-color: var(--gold); }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .palette-option {
+            height: 40px;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .palette-option:hover { transform: scale(1.05); }
+        .palette-option.selected { border-color: var(--text-dark); transform: scale(1.1); box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+
+        /* Colores */
+        .p-pastel { background: linear-gradient(135deg, #ffd1dc, #ffb6c1); }
+        .p-ororosa { background: linear-gradient(135deg, #e5aaac, #d4a373); }
+        .p-lavanda { background: linear-gradient(135deg, #e6e6fa, #d8bfd8); }
+        .p-azul { background: linear-gradient(135deg, #b0c4de, #778899); }
+        .p-esmeralda { background: linear-gradient(135deg, #a8e6cf, #3d8c40); }
+        .p-terracota { background: linear-gradient(135deg, #e27d60, #c38d9e); }
+        .p-borgoña { background: linear-gradient(135deg, #800020, #4a1525); }
+        .p-negro { background: linear-gradient(135deg, #2b2b2b, #1a1a1a); }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--text-dark);
+            color: var(--white);
+            border: none;
+            border-radius: 6px;
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background 0.3s;
+        }
+
+        .btn-submit:hover { background-color: var(--gold); }
+    </style>
+</head>
+<body>
+
+    <div class="config-card">
+        <h1 class="header-title">Crear Vista Previa</h1>
+        
+        <div class="form-group">
+            <label>Nombre de la Festejada</label>
+            <input type="text" id="input-nombre" placeholder="Ej. Paula" required>
+        </div>
+
+        <div class="form-group">
+            <label>Ciudad del Evento</label>
+            <input type="text" id="input-ciudad" placeholder="Ej. CDMX, Monterrey, etc." required>
+        </div>
+
+        <div class="form-group">
+            <label>Elige una Paleta de Colores</label>
+            <div class="palette-grid">
+                <div class="palette-option p-pastel selected" data-color="pastel"></div>
+                <div class="palette-option p-ororosa" data-color="ororosa"></div>
+                <div class="palette-option p-lavanda" data-color="lavanda"></div>
+                <div class="palette-option p-azul" data-color="azul"></div>
+                <div class="palette-option p-esmeralda" data-color="esmeralda"></div>
+                <div class="palette-option p-terracota" data-color="terracota"></div>
+                <div class="palette-option p-borgoña" data-color="borgona"></div>
+                <div class="palette-option p-negro" data-color="negro"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Sube tu Fotografía</label>
+            <input type="file" id="input-foto" accept="image/png, image/jpeg">
+            <p style="font-size: 10px; color: #888; margin-top: 5px;">*La imagen solo se guardará en tu dispositivo local para esta previsualización.</p>
+        </div>
+
+        <button class="btn-submit" onclick="generarPreview()">Visualizar Mi Invitación</button>
+    </div>
+
+    <script>
+        let paletaSeleccionada = 'pastel';
+        const paletas = document.querySelectorAll('.palette-option');
+        
+        paletas.forEach(paleta => {
+            paleta.addEventListener('click', () => {
+                paletas.forEach(p => p.classList.remove('selected'));
+                paleta.classList.add('selected');
+                paletaSeleccionada = paleta.getAttribute('data-color');
+            });
+        });
+
+        function generarPreview() {
+            const nombre = document.getElementById('input-nombre').value || 'Princesa';
+            const ciudad = document.getElementById('input-ciudad').value || 'Por definir';
+            const fotoInput = document.getElementById('input-foto');
+
+            const redirigir = () => {
+                // Generamos la URL con parámetros seguros
+                const url = `index.html?nombre=${encodeURIComponent(nombre)}&ciudad=${encodeURIComponent(ciudad)}&paleta=${paletaSeleccionada}`;
+                window.location.href = url;
+            };
+
+            if (fotoInput.files && fotoInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        sessionStorage.setItem('invytia_foto_preview', e.target.result);
+                    } catch (error) {
+                        console.warn("Memoria local bloqueada o imagen pesada.");
+                    }
+                    redirigir();
+                };
+                reader.readAsDataURL(fotoInput.files[0]);
+            } else {
+                try { sessionStorage.removeItem('invytia_foto_preview'); } catch(e){}
+                redirigir();
+            }
+        }
+    </script>
+</body>
+</html>
