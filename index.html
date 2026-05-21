@@ -1,0 +1,49 @@
+<script>
+    // ESTE SCRIPT RECIBE LOS DATOS DEL CONFIGURADOR
+    document.addEventListener("DOMContentLoaded", function() {
+        const params = new URLSearchParams(window.location.search);
+        
+        // 1. Reemplazar Nombre
+        if(params.has('nombre')) {
+            const nombre = params.get('nombre');
+            document.querySelector('.main-title').textContent = nombre;
+            // Selecciona el span del sobre que dice "Paula"
+            const sobreTexto = document.querySelector('.envelope-text span');
+            if(sobreTexto) sobreTexto.textContent = nombre;
+        }
+
+        // 2. Reemplazar Ciudad (Modifica el texto y actualiza el iframe genéricamente)
+        if(params.has('ciudad')) {
+            const ciudad = params.get('ciudad');
+            // Busca el bloque de Ubicación
+            const infoValues = document.querySelectorAll('.info-value-main');
+            if(infoValues.length >= 2) {
+                infoValues[1].textContent = ciudad; // El segundo bloque es la ciudad
+            }
+        }
+
+        // 3. Reemplazar Fotografía de Fondo desde la Memoria Local
+        const fotoLocal = sessionStorage.getItem('invytia_foto_preview');
+        if(fotoLocal) {
+            document.getElementById('main-invitation').style.backgroundImage = `url('${fotoLocal}')`;
+        }
+
+        // 4. Aplicar Paleta de Color (Ejemplo básico para cambiar la variable principal)
+        if(params.has('paleta')) {
+            const paleta = params.get('paleta');
+            const root = document.documentElement;
+
+            // Aquí puedes mapear las 8 opciones configuradas
+            if(paleta === 'ororosa') {
+                root.style.setProperty('--bg-dark', '#fff5f2');
+                root.style.setProperty('--gold-primary', '#e5aaac'); // Oro rosa
+            } else if (paleta === 'negro') {
+                root.style.setProperty('--bg-dark', '#1a1a1a');
+                root.style.setProperty('--text-light', '#ffffff');
+                root.style.setProperty('--gold-primary', '#d4af37'); // Dorado clásico
+                root.style.setProperty('--text-muted', '#888888');
+            }
+            // Agrega más if/else según los colores exactos que quieras para las otras 6 paletas.
+        }
+    });
+</script>
