@@ -7,41 +7,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Pinyon+Script&family=Montserrat:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;1,400;1,600&display=swap" rel="stylesheet">
     <style>
         :root {
-            /* Paleta por defecto: Rosa Pastel */
-            --bg-dark: #fff5f7; 
+            var(--bg-dark): #fff5f7; 
             --bg-bayou: linear-gradient(135deg, #ffe4e8 0%, #fcd5ce 100%); 
             --gold-primary: #d5bdaf; 
             --gold-secondary: #e3d5ca; 
             --text-light: #594a4e; 
             --text-muted: #9c898c; 
-            --magic-glow: rgba(255, 228, 232, 0.6);
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
         body, html {
-            width: 100%;
-            height: 100%;
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
-            overflow-x: hidden;
-            transition: background-color 0.5s ease;
+            width: 100%; height: 100%; font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-dark); color: var(--text-light);
+            overflow-x: hidden; transition: background-color 0.5s ease;
         }
 
-        /* Estilos del Sobre Animado */
         #envelope-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-bayou);
-            z-index: 1000;
-            display: flex; justify-content: center; align-items: center;
-            transition: opacity 1.2s ease-in-out, visibility 1.2s;
-            overflow: hidden;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-bayou); z-index: 1000; display: flex; justify-content: center; align-items: center;
+            transition: opacity 1.2s ease-in-out, visibility 1.2s; overflow: hidden;
         }
 
         #envelope-screen.fade-out { opacity: 0; visibility: hidden; pointer-events: none; }
@@ -50,39 +35,32 @@
         .envelope-wrapper:hover { transform: scale(0.95); }
 
         .envelope {
-            position: relative; width: 340px; height: 240px;
-            background: var(--gold-secondary);
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            position: relative; width: 340px; height: 240px; background: var(--gold-secondary);
+            border-radius: 0 0 8px 8px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
         }
 
         .envelope::before {
-            content: ''; position: absolute; top: 0; right: 0;
-            border-right: 170px solid var(--gold-primary);
+            content: ''; position: absolute; top: 0; right: 0; border-right: 170px solid var(--gold-primary);
             border-top: 120px solid transparent; border-bottom: 120px solid var(--gold-primary);
             border-radius: 0 0 8px 0; z-index: 2;
         }
 
         .envelope::after {
-            content: ''; position: absolute; top: 0; left: 0;
-            border-left: 170px solid var(--gold-primary);
+            content: ''; position: absolute; top: 0; left: 0; border-left: 170px solid var(--gold-primary);
             border-top: 120px solid transparent; border-bottom: 120px solid var(--gold-primary);
             border-radius: 0 0 0 8px; z-index: 2;
         }
 
         .front-flap {
-            position: absolute; top: 0; left: 0;
-            border-left: 170px solid transparent; border-right: 170px solid transparent;
-            border-top: 130px solid var(--text-muted);
-            transform-origin: top; transition: transform 0.6s ease 0.2s; z-index: 4;
+            position: absolute; top: 0; left: 0; border-left: 170px solid transparent; border-right: 170px solid transparent;
+            border-top: 130px solid var(--text-muted); transform-origin: top; transition: transform 0.6s ease 0.2s; z-index: 4;
         }
 
         .envelope-wrapper.open .front-flap { transform: rotateX(180deg); z-index: 1; }
 
         .wax-seal {
-            position: absolute; top: 110px; left: 50%; transform: translateX(-50%);
-            width: 60px; height: 60px; background: var(--bg-dark);
-            border-radius: 50%; z-index: 5; display: flex; justify-content: center; align-items: center;
+            position: absolute; top: 110px; left: 50%; transform: translateX(-50%); width: 60px; height: 60px;
+            background: var(--bg-dark); border-radius: 50%; z-index: 5; display: flex; justify-content: center; align-items: center;
             box-shadow: 0 4px 10px rgba(0,0,0,0.1), inset 0 2px 4px rgba(255,255,255,0.8);
             transition: transform 0.4s ease, opacity 0.4s ease 0.4s; border: 2px solid var(--gold-primary);
         }
@@ -91,68 +69,40 @@
         .envelope-wrapper.open .wax-seal { transform: translateX(-50%) scale(0); opacity: 0; }
 
         .envelope-text {
-            position: absolute; bottom: -50px; width: 100%; text-align: center;
-            font-family: 'Cinzel', serif; font-size: 14px; color: var(--text-light);
-            letter-spacing: 3px; text-transform: uppercase; font-weight: 600;
+            position: absolute; bottom: -50px; width: 100%; text-align: center; font-family: 'Cinzel', serif; font-size: 14px;
+            color: var(--text-light); letter-spacing: 3px; text-transform: uppercase; font-weight: 600;
         }
 
         .hint-text {
-            position: absolute; bottom: -80px; width: 100%; text-align: center;
-            font-family: 'Montserrat', sans-serif; font-size: 11px; color: var(--text-muted);
-            letter-spacing: 1px; opacity: 0.8; animation: pulse 2s infinite;
+            position: absolute; bottom: -80px; width: 100%; text-align: center; font-family: 'Montserrat', sans-serif;
+            font-size: 11px; color: var(--text-muted); letter-spacing: 1px; opacity: 0.8; animation: pulse 2s infinite;
         }
 
-        /* Contenido Principal */
         #main-invitation {
-            min-height: 100vh;
-            background: url('assets/imagen.jpg') no-repeat center center;
-            background-size: cover; background-attachment: fixed; position: relative;
-            display: flex; flex-direction: column; align-items: center; padding: 60px 20px;
-            opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease-out 0.6s, transform 1.5s ease-out 0.6s;
+            min-height: 100vh; background: url('assets/imagen.jpg') no-repeat center center; background-size: cover;
+            background-attachment: fixed; position: relative; display: flex; flex-direction: column; align-items: center;
+            padding: 60px 20px; opacity: 0; transform: translateY(20px); transition: opacity 1.5s ease-out 0.6s, transform 1.5s ease-out 0.6s;
         }
 
         body.content-active #main-invitation { opacity: 1; transform: translateY(0); }
 
         .invitation-frame {
-            max-width: 500px; width: 100%; border: 1px solid var(--gold-secondary);
-            padding: 40px 30px; text-align: center; position: relative;
-            background: rgba(255, 255, 255, 0.7); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+            max-width: 500px; width: 100%; border: 1px solid var(--gold-secondary); padding: 40px 30px; text-align: center;
+            position: relative; background: rgba(255, 255, 255, 0.7); box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
             backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-radius: 4px;
         }
 
         .lotus-header svg { width: 60px; height: 60px; fill: var(--gold-primary); margin-bottom: 20px; }
 
-        .section-tag {
-            font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 5px;
-            color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; font-weight: 600;
-        }
-
-        .main-title {
-            font-family: 'Pinyon Script', cursive; font-size: 65px; color: var(--text-light);
-            margin-bottom: 15px; line-height: 1.1;
-        }
-
-        .phrase {
-            font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px;
-            color: var(--text-light); line-height: 1.6; margin-bottom: 35px; padding: 0 15px;
-        }
-
-        .divider {
-            width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold-primary), transparent);
-            margin: 25px auto;
-        }
+        .section-tag { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 5px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; font-weight: 600; }
+        .main-title { font-family: 'Pinyon Script', cursive; font-size: 65px; color: var(--text-light); margin-bottom: 15px; line-height: 1.1; }
+        .phrase { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 18px; color: var(--text-light); line-height: 1.6; margin-bottom: 35px; padding: 0 15px; }
+        .divider { width: 60px; height: 1px; background: linear-gradient(to right, transparent, var(--gold-primary), transparent); margin: 25px auto; }
 
         .info-block { margin-bottom: 30px; }
-        .info-label {
-            font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px;
-            color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600;
-        }
-        .info-value-main {
-            font-family: 'Cinzel', serif; font-size: 24px; font-weight: 600; color: var(--text-light); letter-spacing: 2px;
-        }
-        .info-value-sub {
-            font-family: 'Montserrat', sans-serif; font-size: 14px; color: var(--text-light); margin-top: 5px; letter-spacing: 1px;
-        }
+        .info-label { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 8px; font-weight: 600; }
+        .info-value-main { font-family: 'Cinzel', serif; font-size: 24px; font-weight: 600; color: var(--text-light); letter-spacing: 2px; }
+        .info-value-sub { font-family: 'Montserrat', sans-serif; font-size: 14px; color: var(--text-light); margin-top: 5px; letter-spacing: 1px; }
 
         .countdown-grid { display: flex; justify-content: center; gap: 15px; margin: 25px auto 10px auto; max-width: 350px; }
         .countdown-item { flex: 1; background: rgba(255, 255, 255, 0.6); border: 1px solid var(--gold-secondary); padding: 10px 5px; border-radius: 4px; }
@@ -170,10 +120,7 @@
         }
         .btn-whatsapp:hover { background: #ffffff; color: var(--text-light); transform: translateY(-2px); }
 
-        .flower-petal {
-            position: absolute; background-color: var(--gold-primary); border-radius: 150% 0 150% 0; pointer-events: none;
-            animation: float-up infinite ease-in; opacity: 0;
-        }
+        .flower-petal { position: absolute; background-color: var(--gold-primary); border-radius: 150% 0 150% 0; pointer-events: none; animation: float-up infinite ease-in; opacity: 0; }
 
         @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
         @keyframes float-up {
@@ -235,8 +182,8 @@
             <div class="info-grid">
                 <div class="info-block">
                     <div class="info-label">Fecha</div>
-                    <div class="info-value-main">05.SEP.2026</div>
-                    <div class="info-value-sub">Sábado • 18:00 Hrs</div>
+                    <div class="info-value-main" id="main-fecha">05.SEP.2026</div>
+                    <div class="info-value-sub">Día del Evento</div>
                 </div>
 
                 <div class="divider"></div>
@@ -269,6 +216,8 @@
     </main>
 
     <script>
+        let targetDateObj = new Date("September 5, 2026 00:00:00"); // Fecha por defecto
+
         // RECEPCIÓN DE DATOS DEL CONFIGURADOR
         document.addEventListener("DOMContentLoaded", function() {
             try {
@@ -284,6 +233,28 @@
                 // Aplicar Ciudad
                 if(params.has('ciudad')) {
                     document.getElementById('main-ciudad').textContent = params.get('ciudad');
+                }
+
+                // Aplicar Fecha Elegante y Cuenta Atrás
+                if(params.has('fecha') && params.get('fecha') !== '') {
+                    const fechaRaw = params.get('fecha'); // Viene como YYYY-MM-DD
+                    const partes = fechaRaw.split('-');
+                    
+                    if(partes.length === 3) {
+                        const year = partes[0];
+                        const monthNum = parseInt(partes[1], 10);
+                        const day = partes[2];
+                        
+                        const meses = ["ENE", "FEB", "MAR", "ABR", "MAY", "JUN", "JUL", "AGO", "SEP", "OCT", "NOV", "DIC"];
+                        const mesTexto = meses[monthNum - 1];
+
+                        // Cambiamos el texto visible
+                        document.getElementById('main-fecha').textContent = `${day}.${mesTexto}.${year}`;
+                        
+                        // Ajustamos la variable global para el contador
+                        // Usamos T00:00:00 para forzar la medianoche local correctamente
+                        targetDateObj = new Date(`${fechaRaw}T00:00:00`); 
+                    }
                 }
 
                 // Aplicar Imagen
@@ -331,10 +302,9 @@
             }, 1200);
         }
 
-        // Cuenta Atrás
-        const targetDate = new Date("September 5, 2026 00:00:00").getTime();
+        // Cuenta Atrás Dinámica
         const countdownInterval = setInterval(function() {
-            const timeLeft = targetDate - new Date().getTime();
+            const timeLeft = targetDateObj.getTime() - new Date().getTime();
             if (timeLeft < 0) {
                 clearInterval(countdownInterval);
                 document.getElementById("countdown-timer").innerHTML = "<div style='font-family:\"Cinzel\", serif; color:var(--text-light); letter-spacing:2px; font-weight:600;'>¡Llegó el Gran Día!</div>";
